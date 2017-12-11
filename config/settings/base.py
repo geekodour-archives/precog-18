@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
     # custom apps
+    'memes.apps.MemesConfig',
 ]
 
 MIDDLEWARE = [
