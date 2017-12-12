@@ -27,3 +27,10 @@ class MemeDetail(APIView):
         except Exception:
             raise Http404
 
+class MemeSearch(APIView):
+
+    def get(self, request, format=None):
+        query = self.request.query_params.get('q',None)
+        l = list(Meme.objects.search_meme(query))
+        l = MemeSerializer(l, many=True)
+        return Response(l.data)

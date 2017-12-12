@@ -14,6 +14,7 @@ environ.Env.read_env(str(BASE_DIR/'.env'))
 
 SECRET_KEY  = env('SECRET_KEY')
 GIPHY_API_KEY  = env('GIPHY_API_KEY')
+W2V_PATH = BASE_DIR / 'GoogleNews-vectors.bin'
 
 ALLOWED_HOSTS = []
 

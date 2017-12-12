@@ -31,7 +31,4 @@ class MemeManager(models.Manager):
         return db.meme.find_one({'_id':ObjectId(id)})
 
     def search_meme(self,parsedUserQuery,limit=50):
-        # the raw string query should be LDAd or word2vecd in the view layer and the 
-        # proccessed object is parsedUserQuery
-        # use custom logic here, call mongo functions to return relevant items
-        pass
+        return db.meme.find({'$text':{'$search': parsedUserQuery}}).limit(limit)
