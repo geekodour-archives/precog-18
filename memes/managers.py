@@ -36,8 +36,8 @@ class MemeManager(models.Manager):
             { '$text': { '$search': parsedUserQuery } },
         ).limit(limit)
 
-    def tag_search_meme(self,tagList,limit=50):
-        return db.meme.find({'tags':''}).limit(limit)
+    def tag_search_meme(self,wordList,limit=50):
+        return db.meme.find({'tags': {$in: wordList} }).limit(limit)
 
     def tag_search_meme_with_w2v(self,wordList,limit=50):
         # wordlist will be parsed by lda
