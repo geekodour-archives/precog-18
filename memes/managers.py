@@ -30,5 +30,16 @@ class MemeManager(models.Manager):
     def get(self,id):
         return db.meme.find_one({'_id':ObjectId(id)})
 
-    def search_meme(self,parsedUserQuery,limit=50):
-        return db.meme.find({'$text':{'$search': parsedUserQuery}}).limit(limit)
+    def text_search_meme(self,parsedUserQuery,limit=50):
+        #return db.meme.find({'$text':{'$search': parsedUserQuery}}, { score : { $meta: “textScore” } }).sort({ score: { $meta : ‘textScore’ } }).limit(limit)
+        return db.meme.find(
+            { '$text': { '$search': parsedUserQuery } },
+        ).limit(limit)
+
+    def tag_search_meme(self,tagList,limit=50):
+        return db.meme.find({'tags':''}).limit(limit)
+
+    def tag_search_meme_with_w2v(self,wordList,limit=50):
+        # wordlist will be parsed by lda
+        # get all tags, do word2vec similarity on tags, return results of max 2
+        pass

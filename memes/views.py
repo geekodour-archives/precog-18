@@ -31,6 +31,8 @@ class MemeSearch(APIView):
 
     def get(self, request, format=None):
         query = self.request.query_params.get('q',None)
-        l = list(Meme.objects.search_meme(query))
-        l = MemeSerializer(l, many=True)
+        queryTokens = query.split(',')
+        l1 = list(Meme.objects.text_search_meme(query))
+        l2 = list(Meme.objects.tag_search_meme(queryTokens))
+        l = MemeSerializer(l1+l2, many=True)
         return Response(l.data)

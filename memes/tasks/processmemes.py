@@ -7,4 +7,4 @@ The memes are topic modelled here, based on their
 from django.conf import settings
 import gensim
 
-model = gensim.models.KeyedVectors.load_word2vec_format(str(settings.W2V_PATH), binary=True)
+#model = gensim.models.KeyedVectors.load_word2vec_format(str(settings.W2V_PATH), binary=True)
