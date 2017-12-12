@@ -6,6 +6,7 @@ from django.conf import settings
 # Third Party
 
 urlpatterns = [
+    url(r'^api/', include('memes.urls')),
     url(r'^admin/', admin.site.urls),
 ]
 

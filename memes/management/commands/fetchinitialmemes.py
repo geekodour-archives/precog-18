@@ -3,8 +3,8 @@ from django.core.management.base import BaseCommand, CommandError
 from memes.tasks.fetchmemes import RedditMemeFetcher, GiphyMemeFetcher
 
 class Command(BaseCommand):
-    help = 'Fetch 500 Memes from each reddit,instagram,giphy,facebook'
-
+    help = 'Fetch Memes from each reddit,instagram,giphy,facebook'
+    ''' now only reddit and giphy '''
     redditmeme = RedditMemeFetcher()
     giphymeme = GiphyMemeFetcher()
 

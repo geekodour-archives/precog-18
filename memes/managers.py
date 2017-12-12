@@ -13,6 +13,7 @@ class MemeManager(models.Manager):
             pass
 
     def create_from_meme_list(self,memeList):
+        ''' Efficient but fails on duplicates '''
         memeObjList = [self.model(url = m['url'],mongoid = str(m['_id'])) for m in memeList]
         self.model.objects.bulk_create(memeObjList)
         db.meme.insert_many(memeList)
@@ -22,11 +23,10 @@ class MemeManager(models.Manager):
         for m in memeList:
             self.create_meme(m)
     
-    def return_all(self):
-        # create interator object for queryset and mongo thingy
-        pass
+    def return_all(self,limit=1000):
+        return db.meme.find().limit(limit)
 
-    def search_meme(self,parsedUserQuery):
+    def search_meme(self,parsedUserQuery,limit=50):
         # the raw string query should be LDAd or word2vecd in the view layer and the 
         # proccessed object is parsedUserQuery
         # use custom logic here, call mongo functions to return relevant items
