@@ -132,7 +132,7 @@ class GiphyMemeFetcher(BaseMemeFetcher):
         tmp['url'] = re.sub('media[0-9]','i', post['images']['original_still']['url'])
         tmp['title'] = post['title']
         tmp['source'] = self.source
-        tmp['tags'] = self.fetchTags(post['url'])
+        tmp['tags'] = self.fetchTags(post['url']) # TODO : LOWERCASE IT!
         return tmp
 
     def fetchTags(self,postUrl):

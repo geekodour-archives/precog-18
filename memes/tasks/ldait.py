@@ -19,4 +19,4 @@ def ldait(qT): # qT = queryText
     dictionary = corpora.Dictionary(texts)
     corpus = [dictionary.doc2bow(text) for text in texts]
     ldamodel = gensim.models.ldamodel.LdaModel(corpus, num_topics=2, id2word = dictionary, passes=20)
-    print(ldamodel.get_topics())
+    print(ldamodel.print_topics(num_topics=2, num_words=4))
