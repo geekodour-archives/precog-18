@@ -17,3 +17,13 @@ class MemeList(APIView):
         return Response(l.data)
 
 
+class MemeDetail(APIView):
+
+    def get(self, request, pk, format=None):
+        try:
+            l = Meme.objects.get(pk)
+            l = MemeSerializer(l)
+            return Response(l.data)
+        except Exception:
+            raise Http404
+

@@ -1,5 +1,6 @@
 from django.db import models
 from .customdb import db
+from bson.objectid import ObjectId
 
 class MemeManager(models.Manager):
 
@@ -25,6 +26,9 @@ class MemeManager(models.Manager):
     
     def return_all(self,limit=1000):
         return db.meme.find().limit(limit)
+
+    def get(self,id):
+        return db.meme.find_one({'_id':ObjectId(id)})
 
     def search_meme(self,parsedUserQuery,limit=50):
         # the raw string query should be LDAd or word2vecd in the view layer and the 
