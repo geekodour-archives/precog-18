@@ -4,7 +4,10 @@ from django.conf import settings
 import requests
 import time
 import io
+import re
+from bson.objectid import ObjectId
 from urllib.request import urlopen
+#import uuid
 
 # 3rd party
 import pytesseract
@@ -18,7 +21,7 @@ from memes.models import Meme
 class BaseMemeFetcher:
     """Base Class for Fetcher"""
 
-    initialMemeFetchCount = 500
+    initialMemeFetchCount = 20
     regularMemeFetchCount = 20
 
     headers = {
@@ -26,6 +29,7 @@ class BaseMemeFetcher:
     }
 
     memeInfo = {
+        'id': None,
         'url':'',
         'title':'',
         'tags': [],
@@ -36,10 +40,12 @@ class BaseMemeFetcher:
 
     @staticmethod
     def extractTextFromImage(memeInfo):
-        r = requests.get(memeInfo['url'])
-        img = Image.open(io.BytesIO(r.content))
-        memeInfo['extracted_text'] = pytesseract.image_to_string(img)
-        print(memeInfo)
+        try:
+            r = requests.get(memeInfo['url'])
+            img = Image.open(io.BytesIO(r.content))
+            memeInfo['extracted_text'] = pytesseract.image_to_string(img)
+        except Exception:
+            pass
 
     def eachSourceCount(self,totalFetchCount):
         '''Returns the count of memes to be fetched from sub-sources'''
@@ -48,7 +54,8 @@ class BaseMemeFetcher:
     @classmethod
     def saveMemes(cls,memeList):
         [cls.extractTextFromImage(p) for p in memeList]
-        print(memeList)
+        #Meme.objects.create_from_meme_list(memeList)
+        Meme.objects.create_from_meme_list_single(memeList)
         # save the memeList now
 
     @classmethod
@@ -84,6 +91,7 @@ class RedditMemeFetcher(BaseMemeFetcher):
 
     def extractMemeInfo(self,post):
         tmp = self.memeInfo.copy()
+        tmp['_id'] = ObjectId()
         tmp['url'] = post['data']['url']
         tmp['title'] = post['data']['title']
         tmp['source'] = self.source
@@ -120,8 +128,8 @@ class GiphyMemeFetcher(BaseMemeFetcher):
 
     def extractMemeInfo(self,post):
         tmp = self.memeInfo.copy()
-        tmp['url'] = post['images']['original_still']
-        # "https://media1.giphy.com/media/uk746NM22sIbC/200_s.gif",
+        tmp['_id'] = ObjectId()
+        tmp['url'] = re.sub('media[0-9]','i', post['images']['original_still']['url'])
         tmp['title'] = post['title']
         tmp['source'] = self.source
         tmp['tags'] = self.fetchTags(post['url'])
@@ -149,5 +157,7 @@ class GiphyMemeFetcher(BaseMemeFetcher):
         count = self.regularMemeFetchCount
         url = generateUrl(self.baseApiUrls[0],10) # PUT REGULAR HERE HERE
 
-    def getTheOfficeMemes():
+    def getTheOfficeMemes(self):
         count = 100 # HARDDDDD
+        url = 'https://api.giphy.com/v1/gifs/search?api_key={}&q=the office&limit=10'.format(self.API_KEY)
+        self.fetchMemes(url,10)

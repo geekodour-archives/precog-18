@@ -10,6 +10,7 @@ from .managers import MemeManager
 
 class Meme(TimeStampedModel, models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    mongoid = models.TextField(max_length=12,unique=True,null=True,blank=True,db_index=True)
     url = models.URLField(db_index=True,unique=True, editable=False)
 
     objects = MemeManager()

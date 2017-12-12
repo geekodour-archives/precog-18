@@ -7,8 +7,10 @@ class Command(BaseCommand):
 
     redditmeme = RedditMemeFetcher()
     giphymeme = GiphyMemeFetcher()
-    #redditmeme.getInitialMemes()
+
+    redditmeme.getInitialMemes()
     giphymeme.getInitialMemes()
+    giphymeme.getTheOfficeMemes()
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Successfully fetched everything'))
