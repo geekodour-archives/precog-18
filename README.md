@@ -46,7 +46,7 @@ All the fetching classes inherit from the base fetching class `BaseMemeFetcher` 
 *pytesseract* is used to extract words from the images and the extracted text is put into `extracted_text` which is further used in full text search.
 
 #### Django admin commands
-- **fetchinitialmemes**: These`(./memes/tasks/fetchmemes.py)` fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`.User can specify how many memes should be fetched initially from each source.  These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints) So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does.
+- **fetchinitialmemes**: These`(./memes/tasks/fetchmemes.py)` fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`.User can specify how many memes should be fetched initially from each source.  These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints) So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does. Also, I added a additional function to fetch **the office** memes separetly.
 - **indexdbfields**: This django admin command indexes the mongoDB for Text and KeyWord Searches
 
 ### Databases
