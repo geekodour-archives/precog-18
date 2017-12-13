@@ -30,8 +30,17 @@ To access the api after running runserver:
 - Search memes endpoint: http://localhost:8000/api/search/?q=office
 
 # The Idea
-Memes are fetched from various sources(currently reddit and giphy but other sources like facebook/instagram can be added easily)
+Memes are fetched from various sources(currently **reddit** and **giphy** but other sources like **facebook/instagram** can be added easily)
 the fetching part lives in `./memes/tasks/fetchmemes.py`.
+All the fetching classes inherit from the base fetching class `BaseMemeFetcher` in `./memes/tasks/fetchmemes.py`
+
+These fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`
+User can specify how many memes should be fetched initially from each source.
+
+These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints)
+
+So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does.
+
 
 ### Meme Retrival Process
 There is only one enpoint for the search and it takes only a query parameter named `q`, so user needs to pass the query to `q`
