@@ -2,6 +2,8 @@ from django.db import models
 from .customdb import db
 from bson.objectid import ObjectId
 
+from memes.tasks.word2vec import getClosestTags 
+
 class MemeManager(models.Manager):
 
     def create_meme(self,memeInfo):
@@ -40,5 +42,10 @@ class MemeManager(models.Manager):
         return db.meme.find({'tags': {'$in': wordList} }).limit(limit)
 
     def tag_search_meme_w2v(self,wordList,limit=50):
-        # for each tag
-        return []
+        tagList = []
+        for i in wordList:
+            sim = [j for j in getClosestTags(i) if j[1]>0.001]
+            for j in sim:
+                tagList.append(j[0])
+
+        return db.meme.find({'tags': {'$in': tagList} }).limit(limit)

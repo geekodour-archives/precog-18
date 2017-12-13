@@ -36,5 +36,6 @@ class MemeSearch(APIView):
         l1 = list(Meme.objects.text_search_meme(query))
         l2 = list(Meme.objects.tag_search_meme(queryTokens))
         l3 = list(Meme.objects.tag_search_meme_w2v(queryTokens2))
+        # REMOVE DUPLICATES
         l = MemeSerializer(l1+l2+l3, many=True)
         return Response(l.data)
