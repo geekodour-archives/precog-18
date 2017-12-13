@@ -7,6 +7,13 @@ Frontend with react and redux, hosted on netlify.
 
 See [`./requirements.txt`](https://github.com/geekodour/memehunter/blob/master/requirements.txt) for all dependencies.
 
+# Stack Used
+ - Django 2.0
+ - Django Rest Framework
+ - MongoDB, Sqlite3
+ - BS4, requests
+ - gensim
+
 # Quick start
 Download the GoogleNews Word2Vec Slim from [here](https://github.com/eyaler/word2vec-slim), extract and put it by this `./README.md` in the root directory.
 
@@ -34,12 +41,9 @@ Memes are fetched from various sources(currently **reddit** and **giphy** but ot
 the fetching part lives in `./memes/tasks/fetchmemes.py`.
 All the fetching classes inherit from the base fetching class `BaseMemeFetcher` in `./memes/tasks/fetchmemes.py`
 
-These fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`
-User can specify how many memes should be fetched initially from each source.
-
-These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints)
-
-So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does.
+#### Django admin commands
+- **fetchinitialmemes**: These`(./memes/tasks/fetchmemes.py)` fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`.User can specify how many memes should be fetched initially from each source.  These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints) So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does.
+- **indexdbfields**: This django admin command indexes the mongoDB
 
 
 ### Meme Retrival Process
