@@ -12,7 +12,8 @@ See [`./requirements.txt`](https://github.com/geekodour/memehunter/blob/master/r
  - Django Rest Framework
  - MongoDB, Sqlite3
  - BS4, requests
- - gensim
+ - tesseract
+ - gensim,numpy,nltk
  - HTML,CSS,JavaScript,React&Redux
 
 # Quick start
@@ -41,6 +42,8 @@ To access the api after running runserver:
 Memes are fetched from various sources(currently **reddit** and **giphy** but other sources like **facebook/instagram** can be added easily)
 the fetching part lives in `./memes/tasks/fetchmemes.py`.
 All the fetching classes inherit from the base fetching class `BaseMemeFetcher` in `./memes/tasks/fetchmemes.py`
+
+*pytesseract* is used to extract words from the images and the extracted text is put into `extracted_text` which is further used in full text search.
 
 #### Django admin commands
 - **fetchinitialmemes**: These`(./memes/tasks/fetchmemes.py)` fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`.User can specify how many memes should be fetched initially from each source.  These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints) So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does.
@@ -82,7 +85,7 @@ class MemeSearch(APIView):
         l = MemeSerializer(l1+l2+l3, many=True)
         return Response(l.data)
 ```
-Here I am adding up 3 separate queries(l1,l2,l3) that are made to the mongoDB collection `meme`
+Here I am adding up 3 separate queries(`l1,l2,l3`) that are made to the mongoDB collection `meme`
 Because, I enabled full text search on `extracted_text` and `title` and normal indexing on `tags`.
 - **l1** is about getting the relevant results from full text search using **mongoDB**
 - **l2** is about getting the relevant results by matching direct keywords to tags
@@ -91,5 +94,6 @@ Because, I enabled full text search on `extracted_text` and `title` and normal i
   and return results having those tags. The threshold is 0.001.
 
 ## Improvements to be done
-- Duplicates
-- Celery integration
+- Remove Duplicates from `l1+l2+l3`
+- Celery integration for fetching and processing images
+- Extract tokens from `extracted_text`
