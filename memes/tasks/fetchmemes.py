@@ -16,6 +16,8 @@ from bs4 import BeautifulSoup
 
 # custom imports
 from memes.models import Meme
+from memes.tasks.word2vec import avg_sentence
+from memes.customdb import db
 
 
 class BaseMemeFetcher:
@@ -65,6 +67,13 @@ class BaseMemeFetcher:
             time.sleep(1)
             func(self,*args,**kwargs)
         return wrapper
+
+    @staticmethod
+    def createTagDocument(tagName):
+        ''' apperently this does not work '''
+        if(db.tags.find_one({'name':tagName}) == None):
+            vecValue = avg_sentence(tagName.split())
+            db.tags.insert_one({'name':tagName,'vec':vecValue})
 
 class RedditMemeFetcher(BaseMemeFetcher):
     source = 'reddit'
@@ -126,6 +135,10 @@ class GiphyMemeFetcher(BaseMemeFetcher):
     def generateUrl(self,url,limit=100):
         return '{}?api_key={}&limit={}'.format(url,self.API_KEY,limit)
 
+    def saveTags(self,tags): # not used
+        for tag in tags:
+            self.createTagDocument(tag)
+
     def extractMemeInfo(self,post):
         tmp = self.memeInfo.copy()
         tmp['_id'] = ObjectId()
@@ -133,6 +146,7 @@ class GiphyMemeFetcher(BaseMemeFetcher):
         tmp['title'] = post['title']
         tmp['source'] = self.source
         tmp['tags'] = [t.lower().strip() for t in self.fetchTags(post['url'])]
+        #self.saveTags(tmp['tags'])
         return tmp
 
     def fetchTags(self,postUrl):
