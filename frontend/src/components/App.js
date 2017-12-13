@@ -8,11 +8,13 @@ const App = props => (
   <div>
     <nav>
       <Link to="/">Home</Link>
-      <Link to="/about-us">About</Link>
+      {/*<Link to="/about-us">About</Link>*/}
     </nav>
+    <div class="container">
     <Route exact path="/" component={Home} />
     <Route exact path="/about-us" component={About} />
     <Route exact path="/cool" component={Home} />
+    </div>
   </div>
   </Router>
 )
