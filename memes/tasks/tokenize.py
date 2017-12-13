@@ -1,19 +1,14 @@
 from nltk.tokenize import RegexpTokenizer
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
-#from gensim import corpora, models
-#import gensim
 
 tokenizer = RegexpTokenizer(r'\w+')
 en_stop = get_stop_words('en')
 p_stemmer = PorterStemmer()
 
-# loop through document list
 def tokenize(qT): # qT = queryText
     texts = []
     raw = qT.lower()
     tokens = tokenizer.tokenize(raw)
     stopped_tokens = [i for i in tokens if not i in en_stop]
-    stemmed_tokens = [p_stemmer.stem(i) for i in stopped_tokens]
-    texts.append(stemmed_tokens)
-    return set(texts)
+    return set(stopped_tokens)

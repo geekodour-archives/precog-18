@@ -37,10 +37,8 @@ class MemeManager(models.Manager):
         ).limit(limit)
 
     def tag_search_meme(self,wordList,limit=50):
-        print(list(db.meme.find({'tags': {'$in': wordList} }).limit(limit)))
         return db.meme.find({'tags': {'$in': wordList} }).limit(limit)
 
-    def tag_search_meme_with_w2v(self,wordList,limit=50):
-        # wordlist will be parsed by lda
-        # get all tags, do word2vec similarity on tags, return results of max 2
-        pass
+    def tag_search_meme_w2v(self,wordList,limit=50):
+        # for each tag
+        return []

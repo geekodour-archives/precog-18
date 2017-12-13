@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Meme
-#from .serializers import CustomMemeSerializer
 from .serializers import MemeSerializer
+from .tasks.tokenize import tokenize
 
 class MemeList(APIView):
 
@@ -32,8 +32,9 @@ class MemeSearch(APIView):
     def get(self, request, format=None):
         query = self.request.query_params.get('q',None)
         queryTokens = query.split(',')
+        queryTokens2 = tokenize(query)
         l1 = list(Meme.objects.text_search_meme(query))
         l2 = list(Meme.objects.tag_search_meme(queryTokens))
-        print(l2)
-        l = MemeSerializer(l1+l2, many=True)
+        l3 = list(Meme.objects.tag_search_meme_w2v(queryTokens2))
+        l = MemeSerializer(l1+l2+l3, many=True)
         return Response(l.data)
