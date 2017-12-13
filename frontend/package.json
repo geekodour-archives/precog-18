@@ -2,7 +2,6 @@
   "name": "boilerplate2017",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://geekodour.github.io/memehunter_web/",
   "dependencies": {
     "axios": "0.17.1",
     "bulma": "^0.6.1",

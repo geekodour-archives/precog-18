@@ -2,6 +2,10 @@
 i am still pushing changes to this repo.
 ```
 **Live API Endpoint:** http://138.197.42.109:8000/api/search/?format=json&q=car
+
+## Note:  Live Demo
+The rest API is hosted at a digital ocean server, to access the frontend go to `./frontend/build` and open index.html
+
 # memehunter
 A meme retrieval engine - rest api built with django, DRF
 Frontend with react and redux, hosted on netlify.
