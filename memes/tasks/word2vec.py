@@ -9,7 +9,7 @@ import numpy as np
 import gensim
 from memes.customdb import db
 
-model = gensim.models.KeyedVectors.load_word2vec_format(str(settings.W2V_PATH), binary=True)
+model = gensim.models.KeyedVectors.load_word2vec_format(str(settings.W2V_PATH), binary=True,limit=100000)
 
 def avg_sentence(sentence):
     v = np.zeros(300)
