@@ -112,7 +112,7 @@ class RedditMemeFetcher(BaseMemeFetcher):
         data = r.json()['data']
         lastPostName = data['after']
         self.memes_fetched_foreach += len(data['children'])
-        if(self.memes_fetched_foreach>=count):
+        if self.memes_fetched_foreach>=count:
             posts = [d for d in data['children'] if not d['data']['is_self']][0:count]
             posts = [self.extractMemeInfo(post) for post in posts]
             self.saveMemes(posts)

@@ -17,7 +17,8 @@ See [`./requirements.txt`](https://github.com/geekodour/memehunter/blob/master/r
  - HTML,CSS,JavaScript,React&Redux
 
 # Quick start
-Download the GoogleNews Word2Vec Slim from [here](https://github.com/eyaler/word2vec-slim), extract and put it by this `./README.md` in the root directory.
+- Download the GoogleNews Word2Vec Slim from [here](https://github.com/eyaler/word2vec-slim), extract and put it by this `./README.md` in the root directory.
+- User should also have tesseract installed
 
 Create a virtualenv and install the dependencies using `pip install -r requirements.txt`
 
