@@ -13,6 +13,7 @@ See [`./requirements.txt`](https://github.com/geekodour/memehunter/blob/master/r
  - MongoDB, Sqlite3
  - BS4, requests
  - gensim
+ - HTML,CSS,JavaScript,React&Redux
 
 # Quick start
 Download the GoogleNews Word2Vec Slim from [here](https://github.com/eyaler/word2vec-slim), extract and put it by this `./README.md` in the root directory.
@@ -29,7 +30,7 @@ $ ./manage.py fetchinitialmemes
 $ ./manage.py indexdbfields
 $ ./manage.py runserver
 ```
-the `fetchinitialmemes` command will take a while because It will be fetching the memes from the sources.
+> the `fetchinitialmemes` command **will take a while** because It will be fetching the memes from the sources.
 
 To access the api after running runserver:
 - All memes endpoint: http://localhost:8000/api/memes/
@@ -43,14 +44,22 @@ All the fetching classes inherit from the base fetching class `BaseMemeFetcher` 
 
 #### Django admin commands
 - **fetchinitialmemes**: These`(./memes/tasks/fetchmemes.py)` fetch instances are called by a custom django admin command called **fetchinitialmemes** which lives in `./memes/management/commands/fetchinitialmemes.py`.User can specify how many memes should be fetched initially from each source.  These fetch instances were designed so that they can be ran after a specific period of iterval using celery (not implemented because of time constraints) So fetch and process 1000 memes initially and store processed information in the database. That's what **fetchinitialmemes** does.
-- **indexdbfields**: This django admin command indexes the mongoDB
+- **indexdbfields**: This django admin command indexes the mongoDB for Text and KeyWord Searches
 
+### Databases
+Since Django does not have good support for nosql databases and I had to use mongoDB for this for fast inverted Indexing of documents,
+I had to use both sqlite3 and mongoDB for this task. I added custom manager methods to access the mongoDB database
+from the `memes.models.Meme` django model. They can be found under `./memes/managers.py`
 
 ### Meme Retrival Process
 There is only one enpoint for the search and it takes only a query parameter named `q`, so user needs to pass the query to `q`
+So let's look at how this query is processed.
 
 Example:
 ```
 http://localhost:8000/api/search/?q=happy,memes
 ```
 
+## Improvements to be done
+- Duplicates
+- Celery integration
