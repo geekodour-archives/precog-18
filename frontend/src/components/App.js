@@ -10,7 +10,7 @@ const App = props => (
       <Link to="/">Home</Link>
       {/*<Link to="/about-us">About</Link>*/}
     </nav>
-    <div class="container">
+    <div className="container">
     <Route exact path="/" component={Home} />
     <Route exact path="/about-us" component={About} />
     <Route exact path="/cool" component={Home} />

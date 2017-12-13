@@ -1,7 +1,8 @@
-import { DIM_TOGGLE } from '../constants/actionTypes'
+import { DIM_TOGGLE, FETCH_MEMES } from '../constants/actionTypes'
 
 const initialState = {
-        dimToggle : false
+        dimToggle : false,
+        memeList: []
 };
 
 
@@ -13,6 +14,11 @@ export default function uiReducer(state = initialState, action) {
           return {
             ...state,
             dimToggle: !state.dimToggle
+          }
+    case FETCH_MEMES:
+          return {
+            ...state,
+            memeList: action.payload
           }
 
     case 'DO_NOTHING':
