@@ -3,6 +3,8 @@
 ## Note:  Live Demo
 The rest API is hosted at a digital ocean server, to access the frontend go to `./frontend/build` and open index.html
 
+Due to memory limitations on server, a dictionary size has been reduced to 100K words. But the local one gives better results.
+
 # memehunter
 A meme retrieval engine - rest api built with django, DRF
 Frontend with react and redux, hosted on netlify.
