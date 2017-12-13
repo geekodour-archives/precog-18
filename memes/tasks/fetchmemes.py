@@ -31,7 +31,7 @@ class BaseMemeFetcher:
     }
 
     memeInfo = {
-        'id': None,
+        '_id': None,
         'url':'',
         'title':'',
         'tags': [],

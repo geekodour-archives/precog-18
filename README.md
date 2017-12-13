@@ -51,14 +51,44 @@ Since Django does not have good support for nosql databases and I had to use mon
 I had to use both sqlite3 and mongoDB for this task. I added custom manager methods to access the mongoDB database
 from the `memes.models.Meme` django model. They can be found under `./memes/managers.py`
 
+A random mongoDB document:
+```json
+{ "_id" : ObjectId("5a3087fc0d50537617c74fed"),
+  "url" : "https://i.giphy.com/media/4cuyucPeVWbNS/giphy_s.gif",
+  "title" : "the office dislike GIF",
+  "tags" : [ "mrw", "the office", "reddit", "october", "wife", "michael scott", "dislike", "brotherinlaw", "nope dont like that" ],
+  "source" : "giphy",
+  "description" : "",
+  "extracted_text" : "Nope. Don’t Ijke that."
+}
+```
+
 ### Meme Retrival Process
 There is only one enpoint for the search and it takes only a query parameter named `q`, so user needs to pass the query to `q`
-So let's look at how this query is processed.
 
-Example:
+Example: `http://localhost:8000/api/search/?q=happy,memes`
+
+So let's look at how this query is processed:
+**./memes/views.py**
+```python
+class MemeSearch(APIView):
+    def get(self, request, format=None):
+        query = self.request.query_params.get('q',None)
+        queryTokens = query.split(',')
+        queryTokens2 = tokenize(query)
+        l1 = list(Meme.objects.text_search_meme(query))
+        l2 = list(Meme.objects.tag_search_meme(queryTokens))
+        l3 = list(Meme.objects.tag_search_meme_w2v(queryTokens2))
+        l = MemeSerializer(l1+l2+l3, many=True)
+        return Response(l.data)
 ```
-http://localhost:8000/api/search/?q=happy,memes
-```
+Here I am adding up 3 separate queries(l1,l2,l3) that are made to the mongoDB collection `meme`
+Because, I enabled full text search on `extracted_text` and `title` and normal indexing on `tags`.
+- **l1** is about getting the relevant results from full text search using **mongoDB**
+- **l2** is about getting the relevant results by matching direct keywords to tags
+- **l3** uses nltk to extract word tokens from the query, and find the nearest `tags` in mongoDB using word2vec implemented
+  using the [GoogleNews Word2Vec Slim](https://github.com/eyaler/word2vec-slim) pretrained vectors and *gensim*,
+  and return results having those tags. The threshold is 0.001.
 
 ## Improvements to be done
 - Duplicates
