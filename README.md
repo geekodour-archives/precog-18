@@ -1,6 +1,3 @@
-```
-i am still pushing changes to this repo.
-```
 **Live API Endpoint:** http://138.197.42.109:8000/api/search/?format=json&q=car
 
 ## Note:  Live Demo
