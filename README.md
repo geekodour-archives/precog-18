@@ -11,6 +11,8 @@ Frontend with react and redux, hosted on netlify.
 
 See [`./requirements.txt`](https://github.com/geekodour/memehunter/blob/master/requirements.txt) for all dependencies.
 
+![Screenshot](pic.png)
+
 # Stack Used
  - Django 2.0
  - Django Rest Framework
