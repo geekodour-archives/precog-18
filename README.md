@@ -7,7 +7,7 @@ Due to memory limitations on server, a dictionary size has been reduced to 100K 
 
 # memehunter
 A meme retrieval engine - rest api built with django, DRF
-Frontend with react and redux, hosted on netlify.
+Frontend with react and redux, hosted on ~netlify~(just open `./frontend/build/index.html`).
 
 See [`./requirements.txt`](https://github.com/geekodour/memehunter/blob/master/requirements.txt) for all dependencies.
 
